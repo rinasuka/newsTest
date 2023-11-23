@@ -26,6 +26,7 @@ public enum AppHttpCodeEnum {
     // 数据错误 3000~3500
     NO_OPERATOR_AUTH(3000,"无权限操作"),
     NEED_ADMIND(3001,"需要管理员权限"),
+    USER_OR_PASSWORD_ERROR(1,"账户或密码错误"),
 
     // 自媒体端错误  3501~3600
     MATERIAL_REFERENCE_FAIL(3501,"素材引用失效"),
