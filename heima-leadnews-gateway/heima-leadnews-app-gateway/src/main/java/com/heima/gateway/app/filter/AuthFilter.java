@@ -36,7 +36,8 @@ public class AuthFilter implements GlobalFilter, Ordered {
         //校验token
         Claims claimsBody = AppJwtUtil.getClaimsBody(token);
         int verifyToken = AppJwtUtil.verifyToken(claimsBody);
-        if (verifyToken == 1 || verifyToken == 2){
+        //防止魔法数字
+        if (verifyToken == AppJwtUtil.TIME_OUT_1 || verifyToken == AppJwtUtil.TIME_OUT_2){
             log.info("token过期");
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             return response.setComplete();

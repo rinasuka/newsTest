@@ -14,7 +14,9 @@ public class AppJwtUtil {
     private static final String TOKEN_ENCRY_KEY = "MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY";
     // 最小刷新间隔(S)
     private static final int REFRESH_TIME = 300;
-
+    //防止魔法数字
+    public static final int TIME_OUT_1 = 1;
+    public static final int TIME_OUT_2 = 2;
     // 生产ID
     public static String getToken(Long id){
         Map<String, Object> claimMaps = new HashMap<>();
