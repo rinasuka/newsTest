@@ -22,10 +22,10 @@ public class AuthFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         //判断是否为登录请求
-        String path = request.getPath().toString();
+        String path = request.getURI().getPath();
         if (path.contains("login")){
             log.info("登录请求,放行");
-            chain.filter(exchange);
+            return chain.filter(exchange);
         }
         //获取token
         String token = request.getHeaders().getFirst("token");
