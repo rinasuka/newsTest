@@ -43,6 +43,10 @@ public class ApUser implements Serializable {
     @TableField("name")
     private String name;
 
+    @ApiModelProperty(value = "邮箱")
+    @TableField("email")
+    private String email;
+
     @ApiModelProperty(value = "密码,md5加密")
     @TableField("password")
     private String password;

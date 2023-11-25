@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
 import com.heima.model.user.dtos.LoginDto;
+import com.heima.model.user.dtos.RegisterDto;
 import com.heima.model.user.pojos.ApUser;
 import com.heima.user.mapper.ApUserMapper;
 import com.heima.user.service.ApUserService;
 import com.heima.utils.common.AppJwtUtil;
 import com.heima.utils.common.MD5Utils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -54,5 +56,19 @@ public class ApUserServiceImpl implements ApUserService {
             resultMap.put("token",AppJwtUtil.getToken(0L));
         }
         return ResponseResult.okResult(resultMap);
+    }
+
+    @Override
+    public ResponseResult register(RegisterDto registerDto) {
+        log.info("注册请求:{}",registerDto);
+        if (registerDto == null){
+            log.info("未填写注册数据");
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_NOT_EXIST);
+        }
+        ApUser apUser = new ApUser();
+        BeanUtils.copyProperties(registerDto,apUser);
+        LambdaQueryWrapper<ApUser> queryWrapper = new LambdaQueryWrapper<>();
+        apUserMapper.insert(apUser);
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 }

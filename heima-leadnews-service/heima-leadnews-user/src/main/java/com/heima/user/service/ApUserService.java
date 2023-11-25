@@ -2,6 +2,7 @@ package com.heima.user.service;
 
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.user.dtos.LoginDto;
+import com.heima.model.user.dtos.RegisterDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,4 +14,11 @@ public interface ApUserService {
      * @return
      */
     public ResponseResult login(LoginDto loginDto);
+
+    /**
+     * 注册
+     * @param registerDto
+     * @return
+     */
+    ResponseResult register(RegisterDto registerDto);
 }
