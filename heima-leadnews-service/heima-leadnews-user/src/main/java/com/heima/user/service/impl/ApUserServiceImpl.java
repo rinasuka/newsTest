@@ -67,8 +67,13 @@ public class ApUserServiceImpl implements ApUserService {
         }
         ApUser apUser = new ApUser();
         BeanUtils.copyProperties(registerDto,apUser);
+        //判断是否注册过
         LambdaQueryWrapper<ApUser> queryWrapper = new LambdaQueryWrapper<>();
-        apUserMapper.insert(apUser);
+        ApUser checkUser = apUserMapper.selectById(apUser.getPhone());
+        if (checkUser == null){
+            apUserMapper.insert(apUser);
+        }
+
         return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 }
