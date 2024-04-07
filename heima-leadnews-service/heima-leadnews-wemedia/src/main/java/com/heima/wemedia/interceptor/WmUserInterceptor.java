@@ -11,6 +11,7 @@ import javax.xml.ws.handler.Handler;
 public class WmUserInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        //获取header里面的userId
         String userId = request.getHeader("userId");
         if (!StringUtils.isEmpty(userId)){
             UserIdThreadLocalUtil.setUserLocal(Integer.parseInt(userId));
