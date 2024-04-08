@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/vi/material")
+@RequestMapping("/api/v1/material")
 public class WmMaterialController {
     @Autowired
     private WmMaterialService wmMaterialService;

@@ -24,14 +24,16 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper,WmMateri
 
     @Override
     public ResponseResult upload(MultipartFile multipartFile) {
-        //上传图片
+        //上传图片  文件名大概是:xx.jpg
         String originalFilename = multipartFile.getOriginalFilename();
         //防止上传的文件重名
-        String postfix = UUID.randomUUID().toString(); //这种文件就是sasd-saas-sasa这样有横杠的
+        String filename = UUID.randomUUID().toString(); //这种文件就是sasd-saas-sasa这样有横杠的
+        //截图到".jpg"
+        String postfix = originalFilename.substring(originalFilename.lastIndexOf("."));
         //确定上传MinIO后的路径
         String path = "";
         try {
-            path = fileStorageService.uploadImgFile("", postfix + originalFilename, multipartFile.getInputStream());
+            path = fileStorageService.uploadImgFile("",filename + postfix, multipartFile.getInputStream());
         } catch (IOException e) {
             log.error("文件上传异常",e);
             return ResponseResult.errorResult(AppHttpCodeEnum.UPLOAD_ERROR);
@@ -45,6 +47,6 @@ public class WmMaterialServiceImpl extends ServiceImpl<WmMaterialMapper,WmMateri
         wmMaterial.setType((short)0);
         save(wmMaterial);
 
-        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
+        return ResponseResult.okResult(wmMaterial);
     }
 }
