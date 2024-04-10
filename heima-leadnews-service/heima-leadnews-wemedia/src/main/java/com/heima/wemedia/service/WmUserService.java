@@ -3,6 +3,7 @@ package com.heima.wemedia.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.wemedia.dtos.WmLoginDto;
+import com.heima.model.wemedia.dtos.WmRegisterDto;
 import com.heima.model.wemedia.pojos.WmUser;
 
 public interface WmUserService extends IService<WmUser> {
@@ -14,4 +15,10 @@ public interface WmUserService extends IService<WmUser> {
      */
     public ResponseResult login(WmLoginDto dto);
 
+    /**
+     * 自媒体端注册
+     * @param registerDto
+     * @return
+     */
+    ResponseResult register(WmRegisterDto registerDto);
 }

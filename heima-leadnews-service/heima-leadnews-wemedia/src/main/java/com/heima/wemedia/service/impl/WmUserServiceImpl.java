@@ -1,10 +1,12 @@
 package com.heima.wemedia.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.heima.model.common.dtos.ResponseResult;
 import com.heima.model.common.enums.AppHttpCodeEnum;
 import com.heima.model.wemedia.dtos.WmLoginDto;
+import com.heima.model.wemedia.dtos.WmRegisterDto;
 import com.heima.model.wemedia.pojos.WmUser;
 import com.heima.utils.common.AppJwtUtil;
 import com.heima.wemedia.mapper.WmUserMapper;
@@ -18,7 +20,11 @@ import java.util.Map;
 
 @Service
 public class WmUserServiceImpl extends ServiceImpl<WmUserMapper, WmUser> implements WmUserService {
-
+    /**
+     * 登录
+     * @param dto
+     * @return
+     */
     @Override
     public ResponseResult login(WmLoginDto dto) {
         //1.检查参数
@@ -48,5 +54,32 @@ public class WmUserServiceImpl extends ServiceImpl<WmUserMapper, WmUser> impleme
         }else {
             return ResponseResult.errorResult(AppHttpCodeEnum.LOGIN_PASSWORD_ERROR);
         }
+    }
+
+    /**
+     * 注册
+     * @param registerDto
+     * @return
+     */
+    @Override
+    public ResponseResult register(WmRegisterDto registerDto) {
+        //1.检查参数
+        if(StringUtils.isBlank(registerDto.getName()) || StringUtils.isBlank(registerDto.getPassword())){
+            return ResponseResult.errorResult(AppHttpCodeEnum.PARAM_INVALID,"用户名或密码为空");
+        }
+        //2.确认之前是否注册过
+        LambdaQueryWrapper<WmUser> queryWrapper = new LambdaQueryWrapper();
+        queryWrapper.eq(WmUser::getName,registerDto.getName());
+        if (this.getOne(queryWrapper) != null ){
+            return ResponseResult.errorResult(AppHttpCodeEnum.DATA_EXIST,"用户名已存在");
+        }
+        //3.创建新对象
+        WmUser wmUser = new WmUser();
+        wmUser.setName(registerDto.getName());
+        String salt = "123";
+        wmUser.setPassword(DigestUtils.md5DigestAsHex((registerDto.getPassword() + salt).getBytes()));
+        wmUser.setSalt(salt);
+        this.save(wmUser);
+        return ResponseResult.okResult(AppHttpCodeEnum.SUCCESS);
     }
 }
